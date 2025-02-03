@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Password Generator</title>
+    <style>
+        :root {
+            --bg: #1E1E2E;
+            --fg: #CDD6F4;
+            --accent: #F5E0DC;
+            --button-bg: #F28FAD;
+            --button-hover: #F5C2E7;
+        }
+        body {
+            background-color: var(--bg);
+            color: var(--fg);
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+        }
+        .container {
+            background: #313244;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+        input, button, label {
+            display: block;
+            margin-top: 10px;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 8px;
+            background: #45475A;
+            border: none;
+            color: var(--fg);
+        }
+        button {
+            background: var(--button-bg);
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            color: #1E1E2E;
+            font-weight: bold;
+            border-radius: 5px;
+        }
+        button:hover {
+            background: var(--button-hover);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Password Generator</h2>
+        <input type="text" id="password" readonly>
+        <label>Password Length: <input type="number" id="length" value="12" min="4" max="32"></label>
+        <label><input type="checkbox" id="uppercase" checked> Include Uppercase</label>
+        <label><input type="checkbox" id="lowercase" checked> Include Lowercase</label>
+        <label><input type="checkbox" id="numbers" checked> Include Numbers</label>
+        <label><input type="checkbox" id="symbols" checked> Include Symbols</label>
+        <button onclick="generatePassword()">Generate</button>
+        <button onclick="copyPassword()">Copy to Clipboard</button>
+    </div>
+
+    <script>
+        function generatePassword() {
+            const length = document.getElementById('length').value;
+            const uppercase = document.getElementById('uppercase').checked;
+            const lowercase = document.getElementById('lowercase').checked;
+            const numbers = document.getElementById('numbers').checked;
+            const symbols = document.getElementById('symbols').checked;
+
+            let chars = "";
+            if (uppercase) chars += "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            if (lowercase) chars += "abcdefghijklmnopqrstuvwxyz";
+            if (numbers) chars += "0123456789";
+            if (symbols) chars += "!@#$%^&*()_+-=[]{}|;:'\",.<>?/";
+
+            if (chars.length === 0) {
+                document.getElementById('password').value = "Select at least one option";
+                return;
+            }
+
+            let password = "";
+            for (let i = 0; i < length; i++) {
+                password += chars[Math.floor(Math.random() * chars.length)];
+            }
+
+            document.getElementById('password').value = password;
+        }
+
+        function copyPassword() {
+            const passwordField = document.getElementById('password');
+            passwordField.select();
+            document.execCommand("copy");
+        }
+    </script>
+</body>
+</html>
